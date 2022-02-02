@@ -61,6 +61,9 @@ final class Transform: Codable {
       rotation = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotation) ?? KeyframeGroup(Vector1D(0))
     }
     rotationZ = nil
+      
+      self.rotationX = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationX) ?? KeyframeGroup(Vector1D(0))
+       self.rotationY = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationY) ?? KeyframeGroup(Vector1D(0))
 
     // Opacity
     opacity = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .opacity) ?? KeyframeGroup(Vector1D(100))
@@ -75,6 +78,8 @@ final class Transform: Codable {
     case positionY = "py"
     case scale = "s"
     case rotation = "r"
+    case rotationX = "rx"
+    case rotationY = "ry"
     case rotationZ = "rz"
     case opacity = "o"
   }
@@ -108,4 +113,10 @@ final class Transform: Codable {
 
   /// Should always be nil.
   let rotationZ: KeyframeGroup<Vector1D>?
+
+  /// The rotation of the transform. Note: This is single dimensional rotation.
+  let rotationY: KeyframeGroup<Vector1D>
+
+  /// The rotation of the transform. Note: This is single dimensional rotation.
+  let rotationX: KeyframeGroup<Vector1D>
 }

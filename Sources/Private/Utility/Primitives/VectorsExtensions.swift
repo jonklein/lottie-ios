@@ -255,20 +255,30 @@ extension CATransform3D {
     anchor: CGPoint,
     position: CGPoint,
     scale: CGSize,
-    rotation: CGFloat,
+    rotationX: CGFloat,
+    rotationY: CGFloat,
+    rotationZ: CGFloat,
     skew: CGFloat?,
     skewAxis: CGFloat?)
     -> CATransform3D
   {
     if let skew = skew, let skewAxis = skewAxis {
-      return CATransform3DMakeTranslation(position.x, position.y, 0).rotated(rotation).skewed(skew: -skew, skewAxis: skewAxis)
+        return CATransform3DMakeTranslation(position.x, position.y, 0).rotatedX(rotationX).rotatedY(rotationY).rotatedZ(rotationZ).skewed(skew: -skew, skewAxis: skewAxis)
         .scaled(scale * 0.01).translated(anchor * -1)
     }
-    return CATransform3DMakeTranslation(position.x, position.y, 0).rotated(rotation).scaled(scale * 0.01).translated(anchor * -1)
+    return CATransform3DMakeTranslation(position.x, position.y, 0).rotatedX(rotationX).rotatedY(rotationY).rotatedZ(rotationZ).scaled(scale * 0.01).translated(anchor * -1)
   }
 
-  func rotated(_ degrees: CGFloat) -> CATransform3D {
-    CATransform3DRotate(self, degrees.toRadians(), 0, 0, 1)
+  func rotatedX(_ degrees: CGFloat) -> CATransform3D {
+    return CATransform3DRotate(self, degrees.toRadians(), 1, 0, 0)
+  }
+
+  func rotatedY(_ degrees: CGFloat) -> CATransform3D {
+    return CATransform3DRotate(self, degrees.toRadians(), 0, 1, 0)
+  }
+
+  func rotatedZ(_ degrees: CGFloat) -> CATransform3D {
+    return CATransform3DRotate(self, degrees.toRadians(), 0, 0, 1)
   }
 
   func translated(_ translation: CGPoint) -> CATransform3D {

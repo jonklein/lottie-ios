@@ -19,13 +19,16 @@ final class LayerTransformProperties: NodePropertyMap, KeypathSearchable {
 
     anchor = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.anchorPoint.keyframes))
     scale = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.scale.keyframes))
-    rotation = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotation.keyframes))
+    rotationX = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotationX.keyframes))
+    rotationY = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotationY.keyframes))
+    rotationZ = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotation.keyframes))
     opacity = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.opacity.keyframes))
 
     var propertyMap: [String: AnyNodeProperty] = [
       "Anchor Point" : anchor,
       "Scale" : scale,
-      "Rotation" : rotation,
+      "Rotation X" : rotationX,
+      "Rotation Y": rotationY,
       "Opacity" : opacity,
     ]
 
@@ -65,7 +68,9 @@ final class LayerTransformProperties: NodePropertyMap, KeypathSearchable {
 
   let anchor: NodeProperty<Vector3D>
   let scale: NodeProperty<Vector3D>
-  let rotation: NodeProperty<Vector1D>
+  let rotationX: NodeProperty<Vector1D>
+  let rotationY: NodeProperty<Vector1D>
+  let rotationZ: NodeProperty<Vector1D>
   let position: NodeProperty<Vector3D>?
   let positionX: NodeProperty<Vector1D>?
   let positionY: NodeProperty<Vector1D>?
@@ -131,7 +136,9 @@ class LayerTransformNode: AnimatorNode {
       anchor: transformProperties.anchor.value.pointValue,
       position: position,
       scale: transformProperties.scale.value.sizeValue,
-      rotation: transformProperties.rotation.value.cgFloatValue,
+      rotationX: transformProperties.rotationX.value.cgFloatValue,
+      rotationY: transformProperties.rotationY.value.cgFloatValue,
+      rotationZ: transformProperties.rotationZ.value.cgFloatValue,
       skew: nil,
       skewAxis: nil)
 

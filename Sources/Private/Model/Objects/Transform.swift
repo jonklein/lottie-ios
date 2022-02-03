@@ -62,9 +62,12 @@ final class Transform: Codable {
     }
     rotationZ = nil
       
-      self.rotationX = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationX) ?? KeyframeGroup(Vector1D(0))
-       self.rotationY = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationY) ?? KeyframeGroup(Vector1D(0))
+    self.rotationX = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationX) ?? KeyframeGroup(Vector1D(0))
+    self.rotationY = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationY) ?? KeyframeGroup(Vector1D(0))
 
+    self.orientation = try container.decodeIfPresent(KeyframeGroup<Vector3D>.self, forKey: .orientation) ?? KeyframeGroup(Vector3D(x: Double(0), y: 0, z: 0))
+      
+      
     // Opacity
     opacity = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .opacity) ?? KeyframeGroup(Vector1D(100))
   }
@@ -82,6 +85,7 @@ final class Transform: Codable {
     case rotationY = "ry"
     case rotationZ = "rz"
     case opacity = "o"
+    case orientation = "or"
   }
 
   enum PositionCodingKeys: String, CodingKey {
@@ -110,6 +114,9 @@ final class Transform: Codable {
 
   /// The opacity of the transform.
   let opacity: KeyframeGroup<Vector1D>
+
+  /// The orientation of the transform.
+  let orientation: KeyframeGroup<Vector3D>
 
   /// Should always be nil.
   let rotationZ: KeyframeGroup<Vector1D>?

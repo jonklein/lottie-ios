@@ -252,21 +252,32 @@ extension CATransform3D {
   }
 
   static func makeTransform(
-    anchor: CGPoint,
-    position: CGPoint,
+    anchor: Vector3D,
+    position: Vector3D,
     scale: CGSize,
     rotationX: CGFloat,
     rotationY: CGFloat,
     rotationZ: CGFloat,
+    orientation: Vector3D,
     skew: CGFloat?,
     skewAxis: CGFloat?)
     -> CATransform3D
   {
     if let skew = skew, let skewAxis = skewAxis {
-        return CATransform3DMakeTranslation(position.x, position.y, 0).rotatedX(rotationX).rotatedY(rotationY).rotatedZ(rotationZ).skewed(skew: -skew, skewAxis: skewAxis)
-        .scaled(scale * 0.01).translated(anchor * -1)
+        return CATransform3DIdentity
+            .translated(Vector3D(x: position.x, y: position.y, z: position.z))
+            .rotatedX(rotationX).rotatedY(rotationY).rotatedZ(rotationZ)
+            .rotatedX(orientation.x).rotatedY(orientation.y).rotatedZ(orientation.z)
+            .skewed(skew: -skew, skewAxis: skewAxis)
+            .scaled(scale * 0.01)
+            .translated(Vector3D(x: -anchor.x, y: -anchor.y, z: -anchor.z))
     }
-    return CATransform3DMakeTranslation(position.x, position.y, 0).rotatedX(rotationX).rotatedY(rotationY).rotatedZ(rotationZ).scaled(scale * 0.01).translated(anchor * -1)
+      return CATransform3DIdentity
+          .translated(Vector3D(x: position.x, y: position.y, z: position.z))
+          .rotatedX(rotationX).rotatedY(rotationY).rotatedZ(rotationZ)
+          .rotatedX(orientation.x).rotatedY(orientation.y).rotatedZ(orientation.z)
+          .scaled(scale * 0.01)
+          .translated(Vector3D(x: -anchor.x, y: -anchor.y, z: -anchor.z))
   }
 
   func rotatedX(_ degrees: CGFloat) -> CATransform3D {
@@ -281,8 +292,12 @@ extension CATransform3D {
     return CATransform3DRotate(self, degrees.toRadians(), 0, 0, 1)
   }
 
-  func translated(_ translation: CGPoint) -> CATransform3D {
-    CATransform3DTranslate(self, translation.x, translation.y, 0)
+//  func translated(_ translation: CGPoint) -> CATransform3D {
+//    CATransform3DTranslate(self, translation.x, translation.y, 0)
+//  }
+//
+  func translated(_ translation: Vector3D) -> CATransform3D {
+    CATransform3DTranslate(self, translation.x, translation.y, translation.z)
   }
 
   func scaled(_ scale: CGSize) -> CATransform3D {

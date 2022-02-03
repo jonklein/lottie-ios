@@ -20,7 +20,9 @@ final class GroupNodeProperties: NodePropertyMap, KeypathSearchable {
       anchor = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.anchor.keyframes))
       position = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.position.keyframes))
       scale = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.scale.keyframes))
-      rotation = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotation.keyframes))
+      rotationX = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotationX.keyframes))
+      rotationY = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotationY.keyframes))
+      rotationZ = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotationZ.keyframes))
       opacity = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.opacity.keyframes))
       skew = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.skew.keyframes))
       skewAxis = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.skewAxis.keyframes))
@@ -29,7 +31,9 @@ final class GroupNodeProperties: NodePropertyMap, KeypathSearchable {
       anchor = NodeProperty(provider: SingleValueProvider(Vector3D(x: CGFloat(0), y: CGFloat(0), z: CGFloat(0))))
       position = NodeProperty(provider: SingleValueProvider(Vector3D(x: CGFloat(0), y: CGFloat(0), z: CGFloat(0))))
       scale = NodeProperty(provider: SingleValueProvider(Vector3D(x: CGFloat(100), y: CGFloat(100), z: CGFloat(100))))
-      rotation = NodeProperty(provider: SingleValueProvider(Vector1D(0)))
+      rotationX = NodeProperty(provider: SingleValueProvider(Vector1D(0)))
+      rotationY = NodeProperty(provider: SingleValueProvider(Vector1D(0)))
+      rotationZ = NodeProperty(provider: SingleValueProvider(Vector1D(0)))
       opacity = NodeProperty(provider: SingleValueProvider(Vector1D(100)))
       skew = NodeProperty(provider: SingleValueProvider(Vector1D(0)))
       skewAxis = NodeProperty(provider: SingleValueProvider(Vector1D(0)))
@@ -38,7 +42,10 @@ final class GroupNodeProperties: NodePropertyMap, KeypathSearchable {
       "Anchor Point" : anchor,
       "Position" : position,
       "Scale" : scale,
-      "Rotation" : rotation,
+      "Rotation" : rotationZ,
+      "Rotation X" : rotationX,
+      "Rotation Y" : rotationY,
+      "Rotation Z" : rotationZ,
       "Opacity" : opacity,
       "Skew" : skew,
       "Skew Axis" : skewAxis,
@@ -58,19 +65,22 @@ final class GroupNodeProperties: NodePropertyMap, KeypathSearchable {
   let anchor: NodeProperty<Vector3D>
   let position: NodeProperty<Vector3D>
   let scale: NodeProperty<Vector3D>
-  let rotation: NodeProperty<Vector1D>
+  let rotationX: NodeProperty<Vector1D>
+  let rotationY: NodeProperty<Vector1D>
+  let rotationZ: NodeProperty<Vector1D>
   let opacity: NodeProperty<Vector1D>
   let skew: NodeProperty<Vector1D>
   let skewAxis: NodeProperty<Vector1D>
 
   var caTransform: CATransform3D {
     CATransform3D.makeTransform(
-      anchor: anchor.value.pointValue,
-      position: position.value.pointValue,
+      anchor: anchor.value,
+      position: position.value,
       scale: scale.value.sizeValue,
-      rotationX: 0,
-      rotationY: 0,
-      rotationZ: rotation.value.cgFloatValue,
+      rotationX: rotationX.value.cgFloatValue,
+      rotationY: rotationY.value.cgFloatValue,
+      rotationZ: rotationZ.value.cgFloatValue,
+      orientation: Vector3D(x: Double(0.0), y: 0, z: 0),
       skew: skew.value.cgFloatValue,
       skewAxis: skewAxis.value.cgFloatValue)
   }

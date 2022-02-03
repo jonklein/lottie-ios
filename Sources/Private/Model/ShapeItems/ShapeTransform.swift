@@ -21,6 +21,11 @@ final class ShapeTransform: ShapeItem {
     scale = try container
       .decodeIfPresent(KeyframeGroup<Vector3D>.self, forKey: .scale) ?? KeyframeGroup(Vector3D(x: Double(100), y: 100, z: 100))
     rotation = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotation) ?? KeyframeGroup(Vector1D(0))
+    rotationX = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationX) ?? KeyframeGroup(Vector1D(0))
+    rotationY = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationY) ?? KeyframeGroup(Vector1D(0))
+    rotationZ = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .rotationZ) ??
+         KeyframeGroup(Vector1D(0))
+
     opacity = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .opacity) ?? KeyframeGroup(Vector1D(100))
     skew = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .skew) ?? KeyframeGroup(Vector1D(0))
     skewAxis = try container.decodeIfPresent(KeyframeGroup<Vector1D>.self, forKey: .skewAxis) ?? KeyframeGroup(Vector1D(0))
@@ -38,8 +43,15 @@ final class ShapeTransform: ShapeItem {
   /// Scale
   let scale: KeyframeGroup<Vector3D>
 
-  /// Rotation
+/// x-axis Rotation
   let rotation: KeyframeGroup<Vector1D>
+
+  /// x-axis Rotation
+  let rotationX: KeyframeGroup<Vector1D>
+  /// y-axis Rotation
+  let rotationY: KeyframeGroup<Vector1D>
+  /// z-axis Rotation (default rotation if axis unspecified)
+  let rotationZ: KeyframeGroup<Vector1D>
 
   /// opacity
   let opacity: KeyframeGroup<Vector1D>
@@ -69,6 +81,9 @@ final class ShapeTransform: ShapeItem {
     case position = "p"
     case scale = "s"
     case rotation = "r"
+    case rotationX = "rx"
+    case rotationY = "ry"
+    case rotationZ = "rz"
     case opacity = "o"
     case skew = "sk"
     case skewAxis = "sa"

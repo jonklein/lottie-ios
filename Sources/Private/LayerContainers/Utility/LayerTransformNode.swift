@@ -23,13 +23,17 @@ final class LayerTransformProperties: NodePropertyMap, KeypathSearchable {
     rotationY = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotationY.keyframes))
     rotationZ = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.rotation.keyframes))
     opacity = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.opacity.keyframes))
+    orientation = NodeProperty(provider: KeyframeInterpolator(keyframes: transform.orientation.keyframes))
 
     var propertyMap: [String: AnyNodeProperty] = [
       "Anchor Point" : anchor,
       "Scale" : scale,
-      "Rotation X" : rotationX,
+      "Rotation Z": rotationZ,
+      "Rotation X": rotationX,
       "Rotation Y": rotationY,
+      "Rotation": rotationZ,
       "Opacity" : opacity,
+      "Orientation": orientation
     ]
 
     if
@@ -72,6 +76,7 @@ final class LayerTransformProperties: NodePropertyMap, KeypathSearchable {
   let rotationY: NodeProperty<Vector1D>
   let rotationZ: NodeProperty<Vector1D>
   let position: NodeProperty<Vector3D>?
+  let orientation: NodeProperty<Vector3D>
   let positionX: NodeProperty<Vector1D>?
   let positionY: NodeProperty<Vector1D>?
   let opacity: NodeProperty<Vector1D>
@@ -120,25 +125,26 @@ class LayerTransformNode: AnimatorNode {
   func rebuildOutputs(frame _: CGFloat) {
     opacity = Float(transformProperties.opacity.value.cgFloatValue) * 0.01
 
-    let position: CGPoint
-    if let point = transformProperties.position?.value.pointValue {
+    let position: Vector3D
+      if let point = transformProperties.position?.value {
       position = point
     } else if
       let xPos = transformProperties.positionX?.value.cgFloatValue,
       let yPos = transformProperties.positionY?.value.cgFloatValue
     {
-      position = CGPoint(x: xPos, y: yPos)
+        position = Vector3D(x: xPos, y: yPos, z: 0)
     } else {
-      position = .zero
+        position = Vector3D(x: Double(0), y: 0, z: 0)
     }
 
     localTransform = CATransform3D.makeTransform(
-      anchor: transformProperties.anchor.value.pointValue,
+      anchor: transformProperties.anchor.value,
       position: position,
       scale: transformProperties.scale.value.sizeValue,
       rotationX: transformProperties.rotationX.value.cgFloatValue,
       rotationY: transformProperties.rotationY.value.cgFloatValue,
       rotationZ: transformProperties.rotationZ.value.cgFloatValue,
+      orientation: transformProperties.orientation.value,
       skew: nil,
       skewAxis: nil)
 
